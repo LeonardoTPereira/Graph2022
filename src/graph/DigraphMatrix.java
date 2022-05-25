@@ -6,15 +6,15 @@ import guru.nidi.graphviz.model.MutableGraph;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.format.DecimalStyle;
 import java.util.ArrayList;
 import java.util.List;
 
 import static guru.nidi.graphviz.model.Factory.mutGraph;
 import static guru.nidi.graphviz.model.Factory.mutNode;
 
-public class DigraphMatrix {
-    private int numberOfVertices;
-    private List<Vertex> vertices;
+public class DigraphMatrix extends AbstractGraph
+{
     private Edge[][] adjacencyMatrix;
 
     public Edge[][] getAdjacencyMatrix() {
@@ -26,8 +26,7 @@ public class DigraphMatrix {
     }
 
     public DigraphMatrix(List<Vertex> vertices) {
-        numberOfVertices = vertices.size();
-        this.vertices = vertices;
+        super(vertices);
         initializeAdjacencyMatrix();
     }
 
@@ -35,39 +34,89 @@ public class DigraphMatrix {
     {
         setAdjacencyMatrix(new
                 Edge[getNumberOfVertices()][getNumberOfVertices()]);
-        for (int i = 0; i < numberOfVertices; i++) {
-            for (int j = 0; j < numberOfVertices; j++) {
+        for (int i = 0; i < getNumberOfVertices(); i++) {
+            for (int j = 0; j < getNumberOfVertices(); j++) {
                 setEdge(i, j, null);
             }
         }
     }
 
-    private void setEdge(int source, int destination, Edge edge)
+    public void addEdge(Vertex source, Vertex destination, int value)
     {
-        adjacencyMatrix[source][destination] = edge;
+        if(!edgeExists(source, destination))
+        {
+            int sourceIndex = getVertices().indexOf(source);
+            int destinationIndex = getVertices().indexOf(destination);
+            setEdge(sourceIndex, destinationIndex, new Edge(value));
+        }
     }
 
-    public int getNumberOfVertices() {
-        return numberOfVertices;
+    @Override
+    public void addVertex(Vertex vertex) {
+        throw new UnsupportedOperationException();
     }
 
-    public void setNumberOfVertices(int numberOfVertices) {
-        this.numberOfVertices = numberOfVertices;
+    @Override
+    public void removeVertex(Vertex vertex) {
+        throw new UnsupportedOperationException();
     }
 
-    public List<Vertex> getVertices() {
-        return vertices;
+    @Override
+    public void addEdge(Vertex source, Vertex destination) {
+        addEdge(source, destination, 1);
     }
 
-    private void setVertices(List<Vertex> vertices) {
-        this.vertices = vertices;
-    }
-
-    public void printInGraphViz(String fileName)
+    public void removeEdge(Vertex source, Vertex destination)
     {
+        if(edgeExists(source, destination))
+        {
+            int sourceIndex = getVertices().indexOf(source);
+            int destinationIndex = getVertices().indexOf(destination);
+            setEdge(sourceIndex, destinationIndex, null);
+        }
+    }
+
+    @Override
+    public boolean edgeExists(Vertex source, Vertex destination) {
+        int sourceIndex = getVertices().indexOf(source);
+        int destinationIndex = getVertices().indexOf(destination);
+        return adjacencyMatrix[sourceIndex][destinationIndex] != null;
+    }
+
+    @Override
+    public boolean hasAnyEdge(Vertex vertex) {
+        for (int i = 0; i < getNumberOfVertices(); i++)
+        {
+            if(edgeExists(vertex, getVertices().get(i)))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public int getFirstConnectedVertexIndex(Vertex vertex) {
+        return getNextConnectedVertexIndex(vertex, 0);
+    }
+
+    @Override
+    public int getNextConnectedVertexIndex(Vertex vertex, int currentEdge) {
+        for (int i = currentEdge; i < getNumberOfVertices(); i++)
+        {
+            if(edgeExists(vertex, getVertices().get(i)))
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    public void printInGraphviz(String fileName) {
         MutableGraph g = mutGraph("example").setDirected(true);
-        for (int i = 0; i < numberOfVertices; i++) {
-            for (int j = 0; j < numberOfVertices; j++) {
+        for (int i = 0; i < getNumberOfVertices(); i++) {
+            for (int j = 0; j < getNumberOfVertices(); j++) {
                 if(adjacencyMatrix[i][j] != null)
                 {
                     g.add(mutNode(getVertices().get(i).getName())
@@ -83,23 +132,9 @@ public class DigraphMatrix {
         }
     }
 
-    public static void main(String[] args)
+    private void setEdge(int source, int destination, Edge edge)
     {
-        DigraphMatrix digraphMatrix;
-        List<Vertex> vertices = new ArrayList<>();
-        vertices.add(new Vertex("Joao"));
-        vertices.add(new Vertex("Maria"));
-        vertices.add(new Vertex("Jose"));
-        vertices.add(new Vertex("Marcos"));
-        vertices.add(new Vertex("Pedro"));
-        digraphMatrix = new DigraphMatrix(vertices);
-
-        digraphMatrix.setEdge(0, 1, new Edge(1));
-        digraphMatrix.setEdge(0, 2, new Edge(1));
-        digraphMatrix.setEdge(3, 4, new Edge(1));
-        digraphMatrix.setEdge(4, 1, new Edge(1));
-        digraphMatrix.setEdge(4, 0, new Edge(1));
-
-        digraphMatrix.printInGraphViz("Digraph.png");
+        adjacencyMatrix[source][destination] = edge;
     }
+
 }
