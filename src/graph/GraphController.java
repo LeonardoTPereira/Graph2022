@@ -15,7 +15,7 @@ public class GraphController {
         vertices.add(new Vertex("Jose"));
         vertices.add(new Vertex("Marcos"));
         vertices.add(new Vertex("Pedro"));
-        graph = new GraphMatrix(vertices);
+        graph = new GraphList(vertices);
 
         graph.addEdge(vertices.get(0), vertices.get(1));
         graph.addEdge(vertices.get(0), vertices.get(2));
@@ -23,6 +23,6 @@ public class GraphController {
         graph.addEdge(vertices.get(3), vertices.get(4));
         graph.addEdge(vertices.get(4), vertices.get(1));
 
-        graph.printInGraphviz("Graph");
+        graph.printInGraphviz("GraphList");
     }
 }

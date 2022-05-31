@@ -6,8 +6,6 @@ import guru.nidi.graphviz.model.MutableGraph;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.format.DecimalStyle;
-import java.util.ArrayList;
 import java.util.List;
 
 import static guru.nidi.graphviz.model.Factory.mutGraph;
@@ -47,7 +45,7 @@ public class DigraphMatrix extends AbstractGraph
         {
             int sourceIndex = getVertices().indexOf(source);
             int destinationIndex = getVertices().indexOf(destination);
-            setEdge(sourceIndex, destinationIndex, new Edge(value));
+            setEdge(sourceIndex, destinationIndex, new Edge(destination));
         }
     }
 
