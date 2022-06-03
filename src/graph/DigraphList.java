@@ -158,4 +158,17 @@ public class DigraphList extends AbstractGraph
         }
     }
 
+    @Override
+    public float getDistance(Vertex source, Vertex destination) {
+        int vertexIndex = getVertices().indexOf(source);
+        for (Edge edge : getAdjacencyList().get(vertexIndex)) {
+            if(edge.getDestination() == destination)
+            {
+                return edge.getWeight();
+            }
+        }
+        return -1;
+    }
+
+
 }

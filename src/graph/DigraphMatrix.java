@@ -130,6 +130,17 @@ public class DigraphMatrix extends AbstractGraph
         }
     }
 
+    @Override
+    public float getDistance(Vertex source, Vertex destination) {
+        int sourceIndex = getVertices().indexOf(source);
+        int destinationIndex = getVertices().indexOf(destination);
+        var edge = getAdjacencyMatrix()[sourceIndex][destinationIndex];
+
+        if(edge == null) return -1;
+
+        return getAdjacencyMatrix()[sourceIndex][destinationIndex].getWeight();
+    }
+
     private void setEdge(int source, int destination, Edge edge)
     {
         adjacencyMatrix[source][destination] = edge;

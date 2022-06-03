@@ -18,4 +18,6 @@ public interface GraphInterface
     String toString();
 
     void printInGraphviz(String fileName);
+
+    float getDistance(Vertex source, Vertex destination);
 }

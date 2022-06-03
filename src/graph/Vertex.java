@@ -21,4 +21,10 @@ public class Vertex
     public Vertex(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString()
+    {
+        return "Vertex{" + "name='" + name + '\'' + '}';
+    }
 }
