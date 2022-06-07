@@ -141,9 +141,64 @@ public class DigraphMatrix extends AbstractGraph
         return getAdjacencyMatrix()[sourceIndex][destinationIndex].getWeight();
     }
 
+    @Override
+    public Vertex getFirstConnectedVertex(Vertex vertex)
+    {
+        if(!hasAnyEdge(vertex))
+        {
+            return null;
+        }
+        else
+        {
+            var currentVertexIndex = 0;
+            Vertex connected;
+            do
+            {
+                connected = getVertices().get(currentVertexIndex++);
+            }while(!edgeExists(vertex, connected));
+            return connected;
+        }
+    }
+
+    @Override
+    public Vertex getNextConnectedVertex(Vertex source, Vertex currentConnection)
+    {
+        Vertex newConnection;
+        for (int i = getVertices().indexOf(currentConnection)+1; i < getNumberOfVertices(); i++)
+        {
+            newConnection = getVertices().get(i);
+            if(edgeExists(source, newConnection))
+            {
+                return newConnection;
+            }
+        }
+        return null;
+    }
+
     private void setEdge(int source, int destination, Edge edge)
     {
         adjacencyMatrix[source][destination] = edge;
     }
 
+    @Override
+    public String toString() {
+        var s = new StringBuilder();
+        for (var i = 0; i < getNumberOfVertices(); i++)
+        {
+            s.append(i).append(": ");
+            for (var j = 0; j < getNumberOfVertices(); ++j)
+            {
+                if(edgeExists(getVertices().get(i), getVertices().get(j)))
+                {
+                    s.append(getAdjacencyMatrix()[i][j].getWeight()).append(" ");
+                }
+                else
+                {
+                    s.append(0.0 + " ");
+                }
+            }
+            s.append("\n");
+        }
+        return s.toString();
+    }
 }

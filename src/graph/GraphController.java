@@ -9,7 +9,7 @@ public class GraphController {
     public static void main(String[] args)
     {
         AbstractGraph graph;
-        TraversalInterface traversalStrategy = new BreadthFirstTraversal();
+        TraversalStrategy traversalStrategy;
 
         List<Vertex> vertices = new ArrayList<>();
         vertices.add(new Vertex("Joao"));
@@ -25,9 +25,11 @@ public class GraphController {
         graph.addEdge(vertices.get(3), vertices.get(4));
         graph.addEdge(vertices.get(4), vertices.get(1));
 
-        var traversalPath = traversalStrategy.traverseGraph(
-                graph, graph.getVertices().get(0));
-        System.out.println(traversalPath);
+        traversalStrategy = new BreadthFirstTraversal(graph);
+        traversalStrategy.traverseGraph(graph.getVertices().get(0));
+        traversalStrategy.printDistances();
+        traversalStrategy.printPath();
+        traversalStrategy.printVisitTree();
         graph.printInGraphviz("GraphList");
     }
 }

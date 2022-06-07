@@ -1,57 +1,61 @@
 package graph;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
-public class BreadthFirstTraversal implements TraversalInterface
+public class BreadthFirstTraversal extends TraversalStrategy
 {
+    public BreadthFirstTraversal(AbstractGraph graph)
+    {
+        super(graph);
+    }
+
     @Override
-    public String traverseGraph(AbstractGraph graph, Vertex source) {
+    public void traverseGraph(Vertex source)
+    {
+        int sourceIndex = getGraph().getVertices().indexOf(source);
+        addToPath(source);
+        markVertexAsVisited(sourceIndex);
+        setDistanceToVertex(sourceIndex, 0);
+        setPredecessorVertexIndex(sourceIndex, -1);
 
-        var visited = new float[graph.getNumberOfVertices()];
-        Arrays.fill(visited, -1);
-        visited[graph.getVertices().indexOf(source)] = 0;
-
-        Queue<Vertex> verticesToVisit = new LinkedList<>();
-        verticesToVisit.add(source);
-
-        var visitedPath = new StringBuilder();
+        Queue<Vertex> vertexesToVisit = new LinkedList<>();
+        vertexesToVisit.add(source);
 
         Vertex currentVisitedVertex;
-
-        while(!verticesToVisit.isEmpty())
+        int currentVisitedVertexIndex;
+        while(!vertexesToVisit.isEmpty())
         {
-            currentVisitedVertex = verticesToVisit.poll();
-            if(currentVisitedVertex != null)
+            currentVisitedVertex = vertexesToVisit.poll();
+            currentVisitedVertexIndex = getGraph().getVertices().indexOf(currentVisitedVertex);
+            if (currentVisitedVertex != null)
             {
-                createVertexString(graph, visited, visitedPath, currentVisitedVertex);
-                var adjacentVertexIndex = graph.getFirstConnectedVertexIndex(
-                        currentVisitedVertex);
-                while(adjacentVertexIndex != -1)
+                var adjacentVertex = getGraph().getFirstConnectedVertex(currentVisitedVertex);
+                while(adjacentVertex != null)
                 {
-                    if(visited[adjacentVertexIndex] < 0)
+                    int adjacentVertexIndex = getGraph().getVertices().indexOf(adjacentVertex);
+                    if(!hasVertexBeenVisited(adjacentVertexIndex))
                     {
-                        var currentDistance = visited[graph.getVertices().
-                                indexOf(currentVisitedVertex)];
-                        var adjacentVertex = graph.getVertices().get(adjacentVertexIndex);
-                        var nextDistance = graph.getDistance(currentVisitedVertex, adjacentVertex);
-                        visited[adjacentVertexIndex] = currentDistance + nextDistance;
-                        verticesToVisit.add(adjacentVertex);
+                        updateTraversalInfoForVertex(adjacentVertexIndex, currentVisitedVertexIndex);
+                        vertexesToVisit.add(adjacentVertex);
                     }
-                    adjacentVertexIndex = graph.getNextConnectedVertexIndex(currentVisitedVertex,
-                            adjacentVertexIndex);
+                    adjacentVertex = getGraph().getNextConnectedVertex(currentVisitedVertex, adjacentVertex);
                 }
             }
         }
-        return visitedPath.toString();
+        printPath();
     }
 
-    private void createVertexString(AbstractGraph graph, float[] visited, StringBuilder visitedPath, Vertex currentVisitedVertex) {
-        visitedPath.append(currentVisitedVertex).append(' ');
-        visitedPath.append("Distance: ");
-        var vertexIndex = graph.getVertices().indexOf(currentVisitedVertex);
-        visitedPath.append(visited[vertexIndex]);
-        visitedPath.append(' ');
+    private void updateTraversalInfoForVertex(int newVertexIndex, int previousVertexIndex)
+    {
+        var newVertex = getGraph().getVertices().get(newVertexIndex);
+        var oldVertex = getGraph().getVertices().get(previousVertexIndex);
+        float newDistance = getGraph().getDistance(oldVertex, newVertex);
+        float distance = getDistanceToVertex(previousVertexIndex) + newDistance;
+        addToPath(newVertex);
+        markVertexAsVisited(newVertexIndex);
+        setDistanceToVertex(newVertexIndex,  distance);
+        setPredecessorVertexIndex(newVertexIndex, previousVertexIndex);
+        setSuccessorVertexIndex(previousVertexIndex, newVertexIndex);
     }
+
 }

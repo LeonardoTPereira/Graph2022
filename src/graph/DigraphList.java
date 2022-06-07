@@ -170,5 +170,51 @@ public class DigraphList extends AbstractGraph
         return -1;
     }
 
+    @Override
+    public Vertex getFirstConnectedVertex(Vertex vertex)
+    {
+        if(getAdjacencyList().get(getVertices().indexOf(vertex)).isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return getAdjacencyList().get(getVertices().indexOf(vertex)).get(0).getDestination();
+        }
+    }
 
+    @Override
+    public Vertex getNextConnectedVertex(Vertex source, Vertex currentConnection)
+    {
+        int vertexIndex = getVertices().indexOf(source);
+        var currentAdjacentVertexIndex = 0;
+        while(getAdjacencyList().get(vertexIndex).get(currentAdjacentVertexIndex).getDestination() != currentConnection)
+        {
+            currentAdjacentVertexIndex++;
+        }
+        currentAdjacentVertexIndex++;
+        if(getAdjacencyList().get(vertexIndex).size() > currentAdjacentVertexIndex)
+        {
+            return getAdjacencyList().get(vertexIndex).get(currentAdjacentVertexIndex).getDestination();
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    @Override
+    public String toString() {
+        var s = new StringBuilder();
+        for (var i = 0; i < getNumberOfVertices(); i++)
+        {
+            s.append(i).append(": ");
+            for (var j = 0; j < getAdjacencyList().get(i).size(); ++j)
+            {
+                s.append(getAdjacencyList().get(i).get(j).getWeight()).append(" ");
+            }
+            s.append("\n");
+        }
+        return s.toString();
+    }
 }

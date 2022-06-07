@@ -177,4 +177,39 @@ public class DigraphMap extends AbstractGraph{
         }
         return -1;
     }
+
+
+    @Override
+    public Vertex getFirstConnectedVertex(Vertex vertex)
+    {
+        if(!getAdjacencyMap().containsKey(vertex))
+        {
+            return null;
+        }
+        else
+        {
+            return getAdjacencyMap().get(vertex).get(0).getDestination();
+        }
+    }
+
+
+    @Override
+    public Vertex getNextConnectedVertex(Vertex source, Vertex currentConnection)
+    {
+        var currentAdjacentVertexIndex = 0;
+        while(getAdjacencyMap().get(source).get(currentAdjacentVertexIndex).getDestination() != currentConnection)
+        {
+            currentAdjacentVertexIndex++;
+        }
+        currentAdjacentVertexIndex++;
+        if(getAdjacencyMap().get(source).size() > currentAdjacentVertexIndex)
+        {
+            return getAdjacencyMap().get(source).get(currentAdjacentVertexIndex).getDestination();
+        }
+        else
+        {
+            return null;
+        }
+    }
+
 }

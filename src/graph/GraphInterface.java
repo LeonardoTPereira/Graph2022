@@ -20,4 +20,8 @@ public interface GraphInterface
     void printInGraphviz(String fileName);
 
     float getDistance(Vertex source, Vertex destination);
+
+    Vertex getFirstConnectedVertex(Vertex vertex);
+
+    Vertex getNextConnectedVertex(Vertex source, Vertex currentConnection);
 }
