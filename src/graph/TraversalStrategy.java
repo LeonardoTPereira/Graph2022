@@ -95,7 +95,7 @@ public abstract class TraversalStrategy
                     append("Distance: ").append(getDistanceToVertex(getGraph().getVertices().indexOf(vertex))).append(' ').append("\n");
         }
         var traversalPathString = visitedPath.toString();
-        System.out.println(traversalPathString);
+        LOGGER.info(traversalPathString);
     }
 
     protected void printShortestPath(Vertex source, Vertex destination)
