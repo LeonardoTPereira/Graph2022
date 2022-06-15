@@ -62,6 +62,11 @@ public class DigraphMap extends AbstractGraph{
     }
 
     @Override
+    public void addEdge(Vertex source, Vertex destination, int weight) {
+
+    }
+
+    @Override
     public void removeEdge(Vertex source, Vertex destination) {
         List<Edge> sourceEdges = getAdjacencyMap().get(source);
         for (int i = sourceEdges.size()-1; i > -1 ; i--)
