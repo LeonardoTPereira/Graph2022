@@ -58,6 +58,11 @@ public class DigraphList extends AbstractGraph
     }
 
     @Override
+    public void addEdge(Vertex source, Vertex destination, int weight) {
+
+    }
+
+    @Override
     public void removeEdge(Vertex source, Vertex destination)
     {
         int sourceIndex = getVertices().indexOf(source);
