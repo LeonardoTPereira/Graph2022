@@ -1,16 +1,10 @@
 package graph;
 
-import guru.nidi.graphviz.engine.Format;
-import guru.nidi.graphviz.engine.Graphviz;
-import guru.nidi.graphviz.model.MutableGraph;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static guru.nidi.graphviz.model.Factory.mutGraph;
-import static guru.nidi.graphviz.model.Factory.mutNode;
 
 public class DigraphList extends AbstractGraph
 {
@@ -30,6 +24,11 @@ public class DigraphList extends AbstractGraph
         initializeAdjacencyList();
     }
 
+    protected DigraphList() {
+        super();
+        initializeAdjacencyList();
+    }
+
     private void initializeAdjacencyList()
     {
         setAdjacencyList(new ArrayList<>());
@@ -40,7 +39,8 @@ public class DigraphList extends AbstractGraph
 
     @Override
     public void addVertex(Vertex vertex) {
-
+        super.addVertex(vertex);
+        getAdjacencyList().add(new ArrayList<>());
     }
 
     @Override
@@ -58,8 +58,12 @@ public class DigraphList extends AbstractGraph
     }
 
     @Override
-    public void addEdge(Vertex source, Vertex destination, int weight) {
-
+    public void addEdge(Vertex source, Vertex destination, float weight) {
+        if(!edgeExists(source, destination))
+        {
+            int sourceIndex = getVertices().indexOf(source);
+            getAdjacencyList().get(sourceIndex).add(new Edge(destination, weight));
+        }
     }
 
     @Override
@@ -143,24 +147,7 @@ public class DigraphList extends AbstractGraph
     @Override
     public void printInGraphviz(String fileName)
     {
-        MutableGraph g = mutGraph("example1Digraph").setDirected(true);
 
-        for (var i = 0; i < getNumberOfVertices(); i++)
-        {
-            for (var j = 0; j < getAdjacencyList().get(i).size(); ++j)
-            {
-                int destinationIndex = getVertices().indexOf(getAdjacencyList().get(i).get(j).getDestination());
-                g.add(mutNode(getVertices().get(i).getName()).addLink(getVertices().get(destinationIndex).getName()));
-            }
-        }
-        try
-        {
-            Graphviz.fromGraph(g).width(GRAPHVIZ_IMAGE_WIDTH).render(Format.PNG).toFile(new File(GRAPHVIZ_FOLDER+fileName+GRAPHVIZ_FILE_EXTENSION));
-        }
-        catch ( IOException e )
-        {
-            e.printStackTrace();
-        }
     }
 
     @Override

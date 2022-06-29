@@ -15,14 +15,33 @@ public class GraphList extends DigraphList
     }
 
     @Override
+    public void addEdge(Vertex source, Vertex destination, float weight)
+    {
+        super.addEdge(source, destination, weight);
+        super.addEdge(destination, source, weight);
+    }
+
+    @Override
     public void removeEdge(Vertex source, Vertex destination) {
         super.removeEdge(source, destination);
         super.removeEdge(destination, source);
     }
 
+
+
     @Override
     public boolean hasAnyEdge(Vertex vertex) {
         int vertexIndex = getVertices().indexOf(vertex);
         return !getAdjacencyList().get(vertexIndex).isEmpty();
+    }
+
+    protected GraphList() {
+        super();
+    }
+
+    @Override
+    public void removeVertex(Vertex vertex)
+    {
+        throw new UnsupportedOperationException();
     }
 }

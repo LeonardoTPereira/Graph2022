@@ -1,5 +1,6 @@
 package graph;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractGraph implements GraphInterface
@@ -30,5 +31,22 @@ public abstract class AbstractGraph implements GraphInterface
     {
         numberOfVertices = vertices.size();
         this.vertices = vertices;
+    }
+
+    protected AbstractGraph()
+    {
+        vertices = new ArrayList<>();
+        numberOfVertices = 0;
+    }
+
+    public void addVertex(Vertex vertex)
+    {
+        vertices.add(vertex);
+        numberOfVertices = vertices.size();
+    }
+
+    public void addEdge(Vertex source, Vertex destination)
+    {
+        addEdge(source, destination, 1);
     }
 }
