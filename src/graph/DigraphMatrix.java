@@ -1,18 +1,11 @@
 package graph;
 
-import guru.nidi.graphviz.attribute.Label;
-import guru.nidi.graphviz.engine.Format;
-import guru.nidi.graphviz.engine.Graphviz;
-import guru.nidi.graphviz.model.MutableGraph;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 
-import static guru.nidi.graphviz.model.Factory.mutGraph;
-import static guru.nidi.graphviz.model.Factory.mutNode;
-import static guru.nidi.graphviz.model.Link.to;
 
 public class DigraphMatrix extends AbstractGraph
 {
@@ -42,7 +35,7 @@ public class DigraphMatrix extends AbstractGraph
         }
     }
 
-    public void addEdge(Vertex source, Vertex destination, int value)
+    public void addEdge(Vertex source, Vertex destination, float value)
     {
         if(!edgeExists(source, destination))
         {
@@ -116,26 +109,7 @@ public class DigraphMatrix extends AbstractGraph
     @Override
     public void printInGraphviz(String fileName)
     {
-        MutableGraph g = mutGraph("example1Digraph").setDirected(true);
 
-        for (var i = 0; i < getNumberOfVertices(); ++i)
-        {
-            for (var j = 0; j < getNumberOfVertices(); ++j)
-            {
-                if(edgeExists(getVertices().get(i), getVertices().get(j)))
-                {
-                    float weight = adjacencyMatrix[i][j].getWeight();
-                    g.add(mutNode(getVertices().get(i).getName()).addLink(to((mutNode(getVertices().get(j).getName()))).add(Label.of(String.valueOf(weight)))));
-                }
-            }
-        }
-        try
-        {
-            Graphviz.fromGraph(g).width(GRAPHVIZ_IMAGE_WIDTH).render(Format.PNG).toFile(new File(GRAPHVIZ_FOLDER+fileName+GRAPHVIZ_FILE_EXTENSION));
-        }
-        catch ( IOException e )
-        {
-        }
     }
 
     @Override

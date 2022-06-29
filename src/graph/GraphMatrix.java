@@ -10,7 +10,7 @@ public class GraphMatrix extends DigraphMatrix
     }
 
     @Override
-    public void addEdge(Vertex source, Vertex destination, int value)
+    public void addEdge(Vertex source, Vertex destination, float value)
     {
         super.addEdge(source, destination, value);
         super.addEdge(destination, source, value);

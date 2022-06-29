@@ -1,10 +1,5 @@
 package graph;
 
-import guru.nidi.graphviz.attribute.Label;
-import guru.nidi.graphviz.engine.Format;
-import guru.nidi.graphviz.engine.Graphviz;
-import guru.nidi.graphviz.model.MutableGraph;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,9 +9,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static guru.nidi.graphviz.model.Factory.mutGraph;
-import static guru.nidi.graphviz.model.Factory.mutNode;
-import static guru.nidi.graphviz.model.Link.to;
 
 public class DigraphMap extends AbstractGraph{
     private static final Logger LOGGER = Logger.getLogger("DigraphMap.class");
@@ -62,8 +54,16 @@ public class DigraphMap extends AbstractGraph{
     }
 
     @Override
-    public void addEdge(Vertex source, Vertex destination, int weight) {
-
+    public void addEdge(Vertex source, Vertex destination, float weight)
+    {
+        if(!edgeExists(source, destination))
+        {
+            if(!getAdjacencyMap().containsKey(source))
+            {
+                getAdjacencyMap().put(source, new ArrayList<>());
+            }
+            getAdjacencyMap().get(source).add(new Edge(destination, weight));
+        }
     }
 
     @Override
@@ -151,25 +151,7 @@ public class DigraphMap extends AbstractGraph{
     @Override
     public void printInGraphviz(String fileName)
     {
-        MutableGraph g = mutGraph("example1Digraph").setDirected(true);
 
-        for(Map.Entry<Vertex, List<Edge>> pair : getAdjacencyMap().entrySet())
-        {
-            for (var j = 0; j < pair.getValue().size(); ++j)
-            {
-                int destinationIndex = getVertices().indexOf(pair.getValue().get(j).getDestination());
-                float weight = pair.getValue().get(j).getWeight();
-                g.add(mutNode(pair.getKey().getName()).addLink(to((mutNode(getVertices().get(destinationIndex).getName()))).add(Label.of(String.valueOf(weight)))));
-            }
-        }
-        try
-        {
-            Graphviz.fromGraph(g).width(GRAPHVIZ_IMAGE_WIDTH).render(Format.PNG).toFile(new File(GRAPHVIZ_FOLDER+fileName+GRAPHVIZ_FILE_EXTENSION));
-        }
-        catch ( IOException e )
-        {
-            LOGGER.log(Level.SEVERE, "IO Exception thrown when saving Graphviz file", e);
-        }
     }
 
     @Override

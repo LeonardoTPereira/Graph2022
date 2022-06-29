@@ -9,23 +9,23 @@ public class Edge {
     }
 
     private Vertex destination;
-    private int weight;
+    private float weight;
 
     public Edge(Vertex destination) {
         setDestination(destination);
         setWeight(1);
     }
 
-    public Edge(Vertex destination, int value) {
+    public Edge(Vertex destination, float value) {
         setDestination(destination);
         setWeight(value);
     }
 
-    public int getWeight() {
+    public float getWeight() {
         return weight;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(float weight) {
         this.weight = weight;
     }
 }

@@ -6,7 +6,7 @@ public interface GraphInterface
     void removeVertex(Vertex vertex);
 
     void addEdge(Vertex source, Vertex destination);
-    void addEdge(Vertex source, Vertex destination, int weight);
+    void addEdge(Vertex source, Vertex destination, float weight);
     void removeEdge(Vertex source, Vertex destination);
 
     boolean edgeExists(Vertex source, Vertex destination);
