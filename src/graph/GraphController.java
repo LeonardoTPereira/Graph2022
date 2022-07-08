@@ -17,22 +17,25 @@ public class GraphController {
         vertices.add(new Vertex("Jose"));
         vertices.add(new Vertex("Marcos"));
         vertices.add(new Vertex("Pedro"));
-        graph = new GraphMatrix(vertices);
+        vertices.add(new Vertex("Ana"));
+        vertices.add(new Vertex("Karla"));
+        vertices.add(new Vertex("Amanda"));
+        graph = new DigraphList(vertices);
 
         graph.addEdge(vertices.get(0), vertices.get(1), 10);
         graph.addEdge(vertices.get(1), vertices.get(3), 5);
-        graph.addEdge(vertices.get(2), vertices.get(0), 8);
         graph.addEdge(vertices.get(4), vertices.get(2), 7);
         graph.addEdge(vertices.get(3), vertices.get(4), 4);
-        graph.addEdge(vertices.get(4), vertices.get(1), 2);
-        graph.addEdge(vertices.get(3), vertices.get(0), 12);
-        graph.addEdge(vertices.get(3), vertices.get(1), 6);
+        graph.addEdge(vertices.get(2), vertices.get(5), 4);
+        graph.addEdge(vertices.get(4), vertices.get(6), 4);
+        graph.addEdge(vertices.get(5), vertices.get(7), 4);
+        graph.addEdge(vertices.get(5), vertices.get(4), 4);
 
-        traversalStrategy = new PrimMSTTraversal(graph);
+        traversalStrategy = new KahnTopologicalSort(graph);
         traversalStrategy.traverseGraph(graph.getVertices().get(0));
-        traversalStrategy.printDistances();
+        //traversalStrategy.printDistances();
         traversalStrategy.printPath();
-        traversalStrategy.printVisitTree();
+        //traversalStrategy.printVisitTree();
         graph.printInGraphviz("GraphList");
     }
 }
