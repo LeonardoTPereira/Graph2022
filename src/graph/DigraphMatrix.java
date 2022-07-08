@@ -42,6 +42,8 @@ public class DigraphMatrix extends AbstractGraph
             int sourceIndex = getVertices().indexOf(source);
             int destinationIndex = getVertices().indexOf(destination);
             setEdge(sourceIndex, destinationIndex, new Edge(destination, value));
+            source.incrementOutDegree();
+            destination.incrementInDegree();
         }
     }
 
@@ -67,6 +69,8 @@ public class DigraphMatrix extends AbstractGraph
             int sourceIndex = getVertices().indexOf(source);
             int destinationIndex = getVertices().indexOf(destination);
             setEdge(sourceIndex, destinationIndex, null);
+            source.decrementOutDegree();
+            destination.decrementInDegree();
         }
     }
 

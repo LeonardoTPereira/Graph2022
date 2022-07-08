@@ -49,4 +49,9 @@ public abstract class AbstractGraph implements GraphInterface
     {
         addEdge(source, destination, 1);
     }
+
+    public void addEdge(Vertex source, Vertex destination, float weight)
+    {
+        addEdge(source, destination, 1);
+    }
 }

@@ -50,6 +50,8 @@ public class DigraphMap extends AbstractGraph{
                 getAdjacencyMap().put(source, new ArrayList<>());
             }
             getAdjacencyMap().get(source).add(new Edge(destination));
+            source.incrementOutDegree();
+            destination.incrementInDegree();
         }
     }
 
@@ -63,6 +65,8 @@ public class DigraphMap extends AbstractGraph{
                 getAdjacencyMap().put(source, new ArrayList<>());
             }
             getAdjacencyMap().get(source).add(new Edge(destination, weight));
+            source.incrementOutDegree();
+            destination.incrementInDegree();
         }
     }
 
@@ -74,6 +78,8 @@ public class DigraphMap extends AbstractGraph{
             if(sourceEdges.get(i).getDestination() == destination)
             {
                 sourceEdges.remove(i);
+                source.decrementOutDegree();
+                destination.decrementInDegree();
                 break;
             }
         }
