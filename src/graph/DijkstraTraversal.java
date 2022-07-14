@@ -10,6 +10,13 @@ public class DijkstraTraversal extends TraversalStrategy{
         super(graph);
         verticesToVisit = new LinkedList<>();
     }
+
+    @Override
+    void traverseGraph(Vertex source, Vertex destination)
+    {
+        traverseGraph(source);
+    }
+
     public void traverseGraph(Vertex source) {
 
         int sourceIndex = getGraph().getVertices().indexOf(source);

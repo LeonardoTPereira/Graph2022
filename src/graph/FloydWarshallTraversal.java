@@ -23,6 +23,12 @@ public class FloydWarshallTraversal extends TraversalStrategy
     }
 
     @Override
+    void traverseGraph(Vertex source, Vertex destination)
+    {
+        traverseGraph(source);
+    }
+
+    @Override
     void traverseGraph(Vertex source)
     {
         for (int i = 0; i < getGraph().getNumberOfVertices(); i++) {

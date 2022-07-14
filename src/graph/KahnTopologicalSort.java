@@ -11,6 +11,12 @@ public class KahnTopologicalSort extends TraversalStrategy
     }
 
     @Override
+    void traverseGraph(Vertex source, Vertex destination)
+    {
+        traverseGraph(source);
+    }
+
+    @Override
     void traverseGraph(Vertex source)
     {
         var inDegree = new int[getGraph().getNumberOfVertices()];

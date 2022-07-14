@@ -8,6 +8,7 @@ public interface GraphInterface
     void addEdge(Vertex source, Vertex destination);
     void addEdge(Vertex source, Vertex destination, float weight);
     void removeEdge(Vertex source, Vertex destination);
+    void removeAllEdges();
 
     boolean edgeExists(Vertex source, Vertex destination);
 
@@ -25,4 +26,8 @@ public interface GraphInterface
     Vertex getFirstConnectedVertex(Vertex vertex);
 
     Vertex getNextConnectedVertex(Vertex source, Vertex currentConnection);
+
+    void lockEdge(Vertex source, Vertex destination, int lockID);
+
+    Edge getEdge(Vertex source, Vertex destination);
 }

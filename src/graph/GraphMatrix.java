@@ -22,4 +22,17 @@ public class GraphMatrix extends DigraphMatrix
         super.removeEdge(source, destination);
         super.removeEdge(destination, source);
     }
+
+    @Override
+    protected GraphMatrix clone() throws CloneNotSupportedException
+    {
+        return (GraphMatrix)super.clone();
+    }
+
+    @Override
+    public void lockEdge(Vertex source, Vertex destination, int lockID)
+    {
+        super.lockEdge(source, destination, lockID);
+        super.lockEdge(destination, source, lockID);
+    }
 }

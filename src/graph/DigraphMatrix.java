@@ -74,6 +74,17 @@ public class DigraphMatrix extends AbstractGraph
         }
     }
 
+    public void removeAllEdges()
+    {
+        for(int i = 0; i < getAdjacencyMatrix().length; i++)
+        {
+            for (int j = 0; j < getAdjacencyMatrix().length; j++)
+            {
+                getAdjacencyMatrix()[i][j] = null;
+            }
+        }
+    }
+
     @Override
     public boolean edgeExists(Vertex source, Vertex destination) {
         int sourceIndex = getVertices().indexOf(source);
@@ -186,5 +197,42 @@ public class DigraphMatrix extends AbstractGraph
             s.append("\n");
         }
         return s.toString();
+    }
+
+    @Override
+    public void lockEdge(Vertex source, Vertex destination, int lockID)
+    {
+        Edge edge = getEdge(source, destination);
+        edge.setLockID(lockID);
+    }
+
+    @Override
+    public Edge getEdge(Vertex source, Vertex destination)
+    {
+        int sourceIndex = getIndexOfVertex(source);
+        int destinationIndex = getIndexOfVertex(destination);
+        return getAdjacencyMatrix()[sourceIndex][destinationIndex];
+    }
+
+    @Override
+    protected DigraphMatrix clone() throws CloneNotSupportedException
+    {
+        DigraphMatrix cloneGraph = (DigraphMatrix) super.clone();
+        cloneGraph.cloneAdjacencyMatrix(this);
+        return cloneGraph;
+    }
+
+    private void cloneAdjacencyMatrix(DigraphMatrix cloneTarget)
+    {
+        for(int i = 0; i < cloneTarget.getAdjacencyMatrix().length; i++)
+        {
+            for (int j = 0; j < cloneTarget.getAdjacencyMatrix().length; j++)
+            {
+                if(cloneTarget.getAdjacencyMatrix()[i][j] != null)
+                {
+                    addEdge(getVertices().get(i), getVertices().get(j), cloneTarget.getAdjacencyMatrix()[i][j].getWeight());
+                }
+            }
+        }
     }
 }

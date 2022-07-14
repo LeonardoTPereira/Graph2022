@@ -48,4 +48,11 @@ public class GraphMap extends DigraphMap
     {
         return (GraphMap) super.clone();
     }
+
+    @Override
+    public void lockEdge(Vertex source, Vertex destination, int lockID)
+    {
+        super.lockEdge(source, destination, lockID);
+        super.lockEdge(destination, source, lockID);
+    }
 }
