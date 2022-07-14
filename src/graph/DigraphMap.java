@@ -85,6 +85,15 @@ public class DigraphMap extends AbstractGraph{
         }
     }
 
+    public void removeAllEdges()
+    {
+        for(int i = 0; i < getAdjacencyMap().size(); i++)
+        {
+            getAdjacencyMap().get(getVertices().get(i)).clear();
+        }
+        getAdjacencyMap().clear();
+    }
+
     @Override
     public boolean edgeExists(Vertex source, Vertex destination) {
 
@@ -202,6 +211,48 @@ public class DigraphMap extends AbstractGraph{
         else
         {
             return null;
+        }
+    }
+
+    @Override
+    public void lockEdge(Vertex source, Vertex destination, int lockID)
+    {
+        Edge edge = getEdge(source, destination);
+        edge.setLockID(lockID);
+    }
+
+    @Override
+    public Edge getEdge(Vertex source, Vertex destination)
+    {
+        int currentAdjacentVertexIndex = 0;
+        while(getAdjacencyMap().get(source).get(currentAdjacentVertexIndex).getDestination() != destination)
+        {
+            currentAdjacentVertexIndex++;
+        }
+        return getAdjacencyMap().get(source).get(currentAdjacentVertexIndex);
+    }
+
+    @Override
+    protected DigraphMap clone() throws CloneNotSupportedException
+    {
+        DigraphMap cloneGraph = (DigraphMap) super.clone();
+        cloneGraph.cloneAdjacencyMap(this);
+        return cloneGraph;
+    }
+
+    private void cloneAdjacencyMap(DigraphMap cloneTarget)
+    {
+        for(int i = 0; i < cloneTarget.getAdjacencyMap().size(); i++)
+        {
+            Vertex currentVertex = getVertices().get(i);
+            if(cloneTarget.getAdjacencyMap().containsKey(currentVertex))
+            {
+                for (int j = 0; j < cloneTarget.getAdjacencyMap().get(currentVertex).size(); j++)
+                {
+                    Edge currentEdge = cloneTarget.getAdjacencyMap().get(currentVertex).get(j);
+                    addEdge(getVertices().get(i), currentEdge.getDestination(), currentEdge.getWeight());
+                }
+            }
         }
     }
 

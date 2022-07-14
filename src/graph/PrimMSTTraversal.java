@@ -7,6 +7,12 @@ public class PrimMSTTraversal extends TraversalStrategy {
     }
 
     @Override
+    void traverseGraph(Vertex source, Vertex destination)
+    {
+        traverseGraph(source);
+    }
+
+    @Override
     void traverseGraph(Vertex source) {
         int sourceIndex = getGraph().getVertices().indexOf(source);
         setDistanceToVertex(sourceIndex, 0);

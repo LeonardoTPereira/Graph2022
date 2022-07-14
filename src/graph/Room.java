@@ -39,6 +39,10 @@ public class Room extends Vertex {
     }
 
     public void setKeyId(int keyId) {
+        if(keyId < 0)
+        {
+            System.out.println("CHAVE NÃO PODE SER NEGATIVA");
+        }
         this.keyId = keyId;
     }
 
@@ -68,6 +72,7 @@ public class Room extends Vertex {
         isEntrance = false;
         isExit = false;
         isCheckPoint = false;
+        keyId = -1;
     }
 
     public Point getPoint()
@@ -79,4 +84,5 @@ public class Room extends Vertex {
     public String toString() {
         return "Room{" + "(X, Y)= ("+ room.getX() + "," + room.getY() + ")}";
     }
+
 }

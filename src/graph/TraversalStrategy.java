@@ -1,5 +1,6 @@
 package graph;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -74,6 +75,7 @@ public abstract class TraversalStrategy
         traversalPath = new LinkedList<>();
     }
 
+    abstract void traverseGraph(Vertex source, Vertex destination);
     abstract void traverseGraph(Vertex source);
 
     public AbstractGraph getGraph()
@@ -144,5 +146,22 @@ public abstract class TraversalStrategy
         }
         var treeString = treeStringBuilder.toString();
         LOGGER.info(treeString);
+    }
+
+    protected List<Vertex> getShortestPath(Vertex source, Vertex destination)
+    {
+        int sourceIndex = graph.getVertices().indexOf(source);
+        int destinationIndex = graph.getVertices().indexOf(destination);
+        int currentIndex = destinationIndex;
+        Vertex currentVertex = destination;
+        List<Vertex> shortestPath = new ArrayList<>();
+        do
+        {
+            shortestPath.add(currentVertex);
+            currentIndex = getPredecessorVertexIndex(currentIndex);
+            currentVertex = graph.getVertices().get(currentIndex);
+        }while(currentIndex != sourceIndex);
+        shortestPath.add(currentVertex);
+        return shortestPath;
     }
 }

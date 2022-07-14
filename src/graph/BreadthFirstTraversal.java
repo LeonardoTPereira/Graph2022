@@ -10,6 +10,12 @@ public class BreadthFirstTraversal extends TraversalStrategy
     }
 
     @Override
+    void traverseGraph(Vertex source, Vertex destination)
+    {
+        traverseGraph(source);
+    }
+
+    @Override
     public void traverseGraph(Vertex source)
     {
         int sourceIndex = getGraph().getVertices().indexOf(source);
@@ -45,7 +51,7 @@ public class BreadthFirstTraversal extends TraversalStrategy
         printPath();
     }
 
-    private void updateTraversalInfoForVertex(int newVertexIndex, int previousVertexIndex)
+    protected void updateTraversalInfoForVertex(int newVertexIndex, int previousVertexIndex)
     {
         var newVertex = getGraph().getVertices().get(newVertexIndex);
         var oldVertex = getGraph().getVertices().get(previousVertexIndex);

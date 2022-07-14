@@ -44,4 +44,17 @@ public class GraphList extends DigraphList
     {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public void lockEdge(Vertex source, Vertex destination, int lockID)
+    {
+        super.lockEdge(source, destination, lockID);
+        super.lockEdge(destination, source, lockID);
+    }
+
+    @Override
+    protected GraphList clone() throws CloneNotSupportedException
+    {
+        return (GraphList) super.clone();
+    }
 }

@@ -90,6 +90,14 @@ public class DigraphList extends AbstractGraph
         destination.decrementInDegree();
     }
 
+    public void removeAllEdges()
+    {
+        for(int i = 0; i < getAdjacencyList().size(); i++)
+        {
+            getAdjacencyList().get(i).clear();
+        }
+    }
+
     @Override
     public boolean edgeExists(Vertex source, Vertex destination) {
         int sourceIndex = getVertices().indexOf(source);
@@ -241,5 +249,43 @@ public class DigraphList extends AbstractGraph
             s.append("\n");
         }
         return s.toString();
+    }
+
+    public void lockEdge(Vertex source, Vertex destination, int lockID)
+    {
+        Edge edge = getEdge(source, destination);
+        edge.setLockID(lockID);
+    }
+
+    @Override
+    public Edge getEdge(Vertex source, Vertex destination)
+    {
+        int vertexIndex = getVertices().indexOf(source);
+        int currentAdjacentVertexIndex = 0;
+        while(getAdjacencyList().get(vertexIndex).get(currentAdjacentVertexIndex).getDestination() != destination)
+        {
+            currentAdjacentVertexIndex++;
+        }
+        return getAdjacencyList().get(vertexIndex).get(currentAdjacentVertexIndex);
+    }
+
+    @Override
+    protected DigraphList clone() throws CloneNotSupportedException
+    {
+        DigraphList cloneGraph = (DigraphList) super.clone();
+        cloneGraph.setAdjacencyList(new ArrayList<>());
+        for (int i = 0; i < cloneGraph.getNumberOfVertices(); i++)
+        {
+            cloneGraph.getAdjacencyList().add(new ArrayList<>());
+        }
+        for(int i = 0; i < getAdjacencyList().size(); i++)
+        {
+            for(int j = 0; j < getAdjacencyList().get(i).size(); j++)
+            {
+                Vertex destinationInCloneGraph = cloneGraph.getVertices().get(getVertices().indexOf(getAdjacencyList().get(i).get(j).getDestination()));
+                cloneGraph.addEdge(cloneGraph.getVertices().get(i), destinationInCloneGraph, getAdjacencyList().get(i).get(j).getWeight());
+            }
+        }
+        return cloneGraph;
     }
 }
